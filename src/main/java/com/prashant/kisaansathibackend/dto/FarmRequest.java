@@ -1,32 +1,31 @@
 package com.prashant.kisaansathibackend.dto;
 
-
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.time.LocalDate;
 
 @Getter
 @Setter
 public class FarmRequest {
 
-    @NotBlank
-    private String state;
+    @NotBlank(message = "Farm name is required")
+    @Size(max = 100, message = "Farm name must be at most 100 characters")
+    private String farmName;
 
-    @NotBlank
-    private String district;
-
-    @NotNull
-    @Positive
+    @NotNull(message = "Land area is required")
+    @Positive(message = "Land area must be greater than zero")
     private Double landArea;
 
-    @NotBlank
-    private String soilType;
+    // Optional: keep null when no crop is currently sown.
+    @Size(max = 100)
+    private String currentCrop;
 
-    @NotBlank
-    private String irrigationType;
+    @Size(max = 100)
+    private String pastCrop;
 
-    private String previousCrop;
+    // Optional: null when no current crop/sowing date is available.
+    @PastOrPresent(message = "Crop sowed date cannot be in the future")
+    private LocalDate cropSowedDate;
 }
-
